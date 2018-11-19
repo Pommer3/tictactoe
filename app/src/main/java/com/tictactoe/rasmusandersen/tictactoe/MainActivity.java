@@ -13,7 +13,18 @@ public class MainActivity extends AppCompatActivity {
         //Initiate view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final NewLogic gameLogic = new NewLogic();
         final Bool chosenTic = new Bool(true);
+        final State state = new State();
+
+        final int [][] valuesToCords = new int[3][3];
+        int count = 1;
+        for (int i = 0; i<=2; i++){
+            for(int u = 0; u<=2; u++){
+                valuesToCords[i][u]= count;
+                count++;
+            }
+        }
         //Initiate game with state
         final ImageView [][] imgs = new ImageView[3][3];
         imgs[0][0] = (ImageView) findViewById(R.id.tic1);
@@ -34,19 +45,67 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v)
                     {
+
+                        if(state.getState().get(valuesToCords[one][two]) != State.VALUE.EMPTY){
+
+                        }
+                        else{
+
+
                         if(chosenTic.isTrue()) {
                             imgs[one][two].setImageResource(R.drawable.tic);
+
+                            int columntoSetComp = 0;
+                            int rowToSetComp = 0;
+                            int valueOfMove;
+                            state.getState().put(valuesToCords[one][two], State.VALUE.PLAYER1);
+                            valueOfMove = gameLogic.decideNextMove(state);
+                            state.getState().put(valueOfMove,State.VALUE.PLAYER2);
+
+                            for (int y = 0; y<=2; y++){
+                                for(int x = 0; x<=2; x++){
+                                    if(valuesToCords[y][x] == valueOfMove){
+                                        columntoSetComp = y;
+                                        rowToSetComp = x;
+                                    }
+                                }
+                            }
+
+                                imgs[columntoSetComp][rowToSetComp].setImageResource(R.drawable.tac);
                         }
                         else {
                             imgs[one][two].setImageResource(R.drawable.tac);
+
+                            int columntoSetComp = 0;
+                            int rowToSetComp = 0;
+                            int valueOfMove = 1;
+                            state.getState().put(valuesToCords[one][two], State.VALUE.PLAYER1);
+                            valueOfMove = gameLogic.decideNextMove(state);
+                            state.getState().put(valueOfMove,State.VALUE.PLAYER2);
+
+                            for (int y = 0; y<=2; y++){
+                                for(int x = 0; x<=2; x++){
+                                    if(valuesToCords[y][x] == valueOfMove){
+                                        columntoSetComp = y;
+                                        rowToSetComp = x;
+                                    }
+                                }
+                            }
+
+                                imgs[columntoSetComp][rowToSetComp].setImageResource(R.drawable.tic);
+
                         }
-                        chosenTic.setTrue(!chosenTic.isTrue());
+                        }
+
 
                     }
                 });
             }
         }
 
+
+    }
+    private void makeCompChoice(){
 
 
     }
